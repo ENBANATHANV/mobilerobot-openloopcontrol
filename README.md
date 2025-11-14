@@ -7,44 +7,89 @@ To develop a python control code to move the mobilerobot along the predefined pa
 1. RoboMaster EP core
 2. Python 3.7
 
-## Procedure
+## Procedure:
 
-Step1:
 
-<br/>
+Step1: Initiate the MobileRobot.
 
-Step2:
+</br>
 
-<br/>
+Step2: Connect your PC with the MobileRobot through Wi-Fi.
 
-Step3:
+</br>
 
-<br/>
+Step3: Open batter_level.py file and check the battery.
 
-Step4:
+</br>
 
-<br/>
+Step4: Open the other Python files and Program the movements of the robot using python.
 
-Step5:
+</br>
 
-<br/>
+Step5: Execute the python program and record the movements.
+
+</br>
+
 
 ## Program
 ```python
 from robomaster import robot
+from robomaster import camera
 import time
 
 if __name__ == '__main__':
+    # Initialize robot connection
     ep_robot = robot.Robot()
     ep_robot.initialize(conn_type="ap")
 
+    # Get robot modules
     ep_chassis = ep_robot.chassis
+    ep_led = ep_robot.led
+    ep_camera = ep_robot.camera
 
-    ## Write your code here
+    print("Video streaming started...")
+    ep_camera.start_video_stream(display=True, resolution=camera.STREAM_360P)
 
+    # Movement and LED sequence
+    sequence = [
+        (2.3, 0, 0),
+        (0.5, 0, 45),
+        (0.5, 0, 30),
+        (0.4, 0, 30),
+        (0.4, 0, 45),
+        (0.4, 0, 45),
+        (0.7, 0, -35),
+        (0.3, 0, 0),
+        (0.6, 0, -45),
+        (0.6, 0, 0),
+        (0.3, 0, 45),
+        (0.9, 0, 0),
+        (0, 0, 55),
+        (0.2, 0, -35),
+        (0.4, 0, 45),
+        (0.3, 0, 45),
+        (0.8, 0, 0),
+        (0.3, 0, 35),
+        (0.1, 0, -45),
+        (0.1, 0, 40),
+        (0.2, 0, -30),
+        (0.3, 0, 45),
+        (0.4, 0, -25),
+        (0, 0, 40),
+        (0, 0, 5),
+        (0.4, 0, 10),
+        (0, 0, 0)
+    ]
 
+    for (x, y, z) in sequence:
+        ep_chassis.move(x=x, y=y, z=z, xy_speed=1).wait_for_completed()
+        ep_led.set_led(comp="all", r=255, g=100, b=0, effect="on")
 
-    
+    # Stop camera and close connection
+    time.sleep(4)
+    ep_camera.stop_video_stream()
+    print("Stopped video streaming...")
+
     ep_robot.close()
 ```
 
@@ -64,8 +109,7 @@ Insert image here
 
 Upload your video in Youtube and paste your video-id here
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
-
+https://youtu.be/9OXFohHN7OM?si=E-GWzUruYJTVpbh3
 <br/>
 <br/>
 <br/>
